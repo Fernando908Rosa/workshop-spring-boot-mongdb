@@ -10,4 +10,5 @@ import com.fernandosilveira.workshopmongo.domain.User;
 public interface UserRepository extends MongoRepository<User, String> {
 
 
+
 }
