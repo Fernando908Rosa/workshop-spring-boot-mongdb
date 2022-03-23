@@ -1,10 +1,12 @@
 package com.fernandosilveira.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fernandosilveira.workshopmongo.domain.Post;
 import com.fernandosilveira.workshopmongo.domain.User;
 import com.fernandosilveira.workshopmongo.dto.UserDTO;
 import com.fernandosilveira.workshopmongo.repository.UserRepository;
@@ -14,34 +16,34 @@ import com.fernandosilveira.workshopmongo.services.exception.ObjectNotFoundExcep
 public class UserService {
 	
 	@Autowired
-	private UserRepository repo;
+	private UserRepository repository;
 	
    public List<User> findAll() {
-	   return repo.findAll();
+	   return repository.findAll();
    	}
    
   public User findById(String id) {
-	  User user = repo.findOne(id);
+	  Optional<User> user = repository.findById(id);
 	  if (user == null) {
 		  throw new ObjectNotFoundException("Objeto nao encontrado");
 	  }
-	  	return user;
+	  	return user.get();
  	
   } 
   
   public User insert(User obj) {
-	  return repo.insert(obj);
+	  return repository.insert(obj);
   	}
   
   public void delete(String id) {
 	  findById(id);
-	  repo.delete(id);
+	  repository.deleteById(id);
   }
   
   public User update(User obj) {
-	  User newobj = repo.findOne(obj.getId());
+	  User newobj = repository.findById(obj.getId()).get();
 	  updateData(newobj, obj);
-	  return repo.save(newobj);
+	  return repository.save(newobj);
 	  
   }
   
